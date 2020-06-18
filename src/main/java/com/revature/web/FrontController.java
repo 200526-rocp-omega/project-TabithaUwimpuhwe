@@ -123,18 +123,8 @@ public class FrontController extends HttpServlet {
 				}
 				break;
 				
-			case "accounts":
-				HttpSession session = req.getSession(false);
-				session = req.getSession(false);
-				AuthService.guard(session, "Admin", "Employee");
-				Account a = om.readValue(req.getReader(), Account.class);
-				accountController.createAccountById(session, a);
-				System.out.println(a);
-				res.setStatus(201);
-				res.getWriter().println(om.writeValueAsString(a));		
-				break;
-				
 			case "users":
+				HttpSession session = req.getSession(false);
 				session = req.getSession(false);
 				AuthService.guard(session, "Admin");
 				
@@ -143,6 +133,16 @@ public class FrontController extends HttpServlet {
 				System.out.println(u1);
 				res.setStatus(201);
 				res.getWriter().println(om.writeValueAsString(u1));		
+				break;
+				
+			case "accounts":
+				session = req.getSession(false);
+				AuthService.guard(session, "Admin", "Employee");
+				Account a = om.readValue(req.getReader(), Account.class);
+				accountController.createAccountById(session, a);
+				System.out.println(a);
+				res.setStatus(201);
+				res.getWriter().println(om.writeValueAsString(a));		
 				break;
 			}
 		} catch (NotLoggedInException e) {
