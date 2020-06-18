@@ -3,14 +3,14 @@ package com.revature.models;
 import java.util.Objects;
 
 public class User {
-	  private int userId; // primary key
-	  private String username; // not null, unique
-	  private String password; // not null
-	  private String firstName; // not null
-	  private String lastName; // not null
-	  private String email; // not null
-	  private Role role;
-	  
+	private int userId;
+	private String username;
+	private String password;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private Role role;
+
 	public User() {
 		super();
 	}
@@ -82,7 +82,7 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(email, firstName, lastName, password, role, userId, username);
@@ -107,6 +107,6 @@ public class User {
 	public String toString() {
 		return "AbstractUser [userId=" + userId + ", username=" + username + ", password=" + password + ", firstName="
 				+ firstName + ", lastName=" + lastName + ", email=" + email + ", role=" + role + "]";
-	} 
-	  
 	}
+
+}

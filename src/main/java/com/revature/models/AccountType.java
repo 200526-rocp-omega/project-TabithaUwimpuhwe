@@ -3,8 +3,8 @@ package com.revature.models;
 import java.util.Objects;
 
 public class AccountType {
-	  private int typeId; // primary key
-	  private String type; // not null, unique
+	  private int typeId; 
+	  private String type; 
 	  
 	public AccountType() {
 		super();

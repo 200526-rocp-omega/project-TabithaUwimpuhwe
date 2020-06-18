@@ -3,11 +3,10 @@ package com.revature.models;
 import java.util.Objects;
 
 public class Role {
-	
-	  private int roleId; // primary key
-	  private String role; // not null, unique
-	  
-	  
+
+	private int roleId;
+	private String role;
+
 	public Role() {
 		super();
 	}
@@ -55,6 +54,4 @@ public class Role {
 	public String toString() {
 		return "Role [roleId=" + roleId + ", role=" + role + "]";
 	}
-	  
-	}
-
+}

@@ -10,9 +10,6 @@ import java.util.List;
 import com.revature.models.Account;
 import com.revature.models.AccountStatus;
 import com.revature.models.AccountType;
-//import com.revature.models.Role;
-//import com.revature.models.User;
-//import com.revature.models.Accounts;
 import com.revature.util.ConnectionUtil;
 
 public class AccountDAO implements IAccountDAO {
@@ -67,8 +64,8 @@ public class AccountDAO implements IAccountDAO {
 
 		try (Connection conn = ConnectionUtil.getConnection()) {
 			
-			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID)\r\n" + 
-													"INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID)";
+			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID) "
+					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID)";
 
 			Statement stmt = conn.createStatement();
 
@@ -77,9 +74,9 @@ public class AccountDAO implements IAccountDAO {
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				double balance = rs.getDouble("balance");
-				int statusId = rs.getInt ("account_status_id"); //double check on _ 
+				int statusId = rs.getInt ("status_id"); 
+				int typeId = rs.getInt ("type_id"); 
 				String accountStatus = rs.getString("status");
-				int typeId = rs.getInt ("account_type_id"); //double check
 				String accountType = rs.getString("type");
 				
 				AccountStatus as = new AccountStatus(statusId, accountStatus);
@@ -91,7 +88,6 @@ public class AccountDAO implements IAccountDAO {
 			}
 
 		} catch (SQLException e) {
-			// If something goes wrong, return an empty list
 			e.printStackTrace();
 			return new ArrayList();
 		}
@@ -105,8 +101,8 @@ public class AccountDAO implements IAccountDAO {
 
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID)\r\n"
-					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID where ACCOUNTS.id = ?)";
+			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID) "
+					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID) where ACCOUNTS.id =?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
@@ -115,17 +111,14 @@ public class AccountDAO implements IAccountDAO {
 
 			while (rs.next()) {
 				double balance = rs.getDouble("balance");
-				int statusId = rs.getInt("account_status_id"); // double check on _
+				int statusId = rs.getInt ("status_id"); 
+				int typeId = rs.getInt ("type_id"); 
 				String accountStatus = rs.getString("status");
-				int typeId = rs.getInt("account_type_id"); // double check
 				String accountType = rs.getString("type");
 
 				AccountStatus as = new AccountStatus(statusId, accountStatus);
 				AccountType at = new AccountType(typeId, accountType);
-
-				Account a = new Account(id, balance, as, at);
-//				return new Account(id, balance, as, at);
-				return a;
+				return new Account(id, balance, as, at);
 			}
 
 		} catch (SQLException e) {
@@ -141,10 +134,9 @@ public class AccountDAO implements IAccountDAO {
 		
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID)\r\n"
-					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID where ACCOUNTS.Status_id = ?)";
-																	//double check on _ for Accounts.Status.id
-
+			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID) "
+					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID) where ACCOUNTS.Status_id =?";
+																	
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
 
@@ -152,9 +144,9 @@ public class AccountDAO implements IAccountDAO {
 
 			while (rs.next()) {
 				double balance = rs.getDouble("balance");
-				int statusId = rs.getInt("account_status_id"); // double check on _
+				int statusId = rs.getInt ("status_id"); 
+				int typeId = rs.getInt ("type_id"); 
 				String accountStatus = rs.getString("status");
-				int typeId = rs.getInt("account_type_id"); // double check
 				String accountType = rs.getString("type");
 
 				AccountStatus as = new AccountStatus(statusId, accountStatus);
@@ -175,9 +167,8 @@ public class AccountDAO implements IAccountDAO {
 
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID)\r\n"
-					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID where ACCOUNTS.Type_id = ?)";
-																	//double check on _ for Accounts.Status.id
+			String sql = "SELECT * FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID) "
+					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID) where ACCOUNTS.Type_id =?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
@@ -186,9 +177,9 @@ public class AccountDAO implements IAccountDAO {
 
 			while (rs.next()) {
 				double balance = rs.getDouble("balance");
-				int statusId = rs.getInt("account_status_id"); // double check on _
+				int statusId = rs.getInt ("status_id"); 
+				int typeId = rs.getInt ("type_id"); 
 				String accountStatus = rs.getString("status");
-				int typeId = rs.getInt("account_type_id"); // double check
 				String accountType = rs.getString("type");
 
 				AccountStatus as = new AccountStatus(statusId, accountStatus);
@@ -196,11 +187,9 @@ public class AccountDAO implements IAccountDAO {
 
 				return new Account(id, balance, as, at);
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 
@@ -209,7 +198,8 @@ public class AccountDAO implements IAccountDAO {
 		
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "SELECT balance FROM ACCOUNTS where id= ?)";
+			String sql = "SELECT balance FROM  ((ACCOUNTS INNER JOIN ACCOUNT_STATUS ON ACCOUNTS.STATUS_ID = ACCOUNT_STATUS.ID) "
+					+ "INNER JOIN ACCOUNT_TYPE ON ACCOUNTS.TYPE_ID = ACCOUNT_TYPE.ID) where ACCOUNTS.ID=?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, id);
@@ -218,21 +208,20 @@ public class AccountDAO implements IAccountDAO {
 
 			while (rs.next()) {
 				double balance = rs.getDouble("balance");
-				int statusId = rs.getInt("account_status_id"); // double check on _
+				int statusId = rs.getInt ("status_id"); 
+				int typeId = rs.getInt ("type_id"); 
 				String accountStatus = rs.getString("status");
-				int typeId = rs.getInt("account_type_id"); // double check
 				String accountType = rs.getString("type");
 
 				AccountStatus as = new AccountStatus(statusId, accountStatus);
 				AccountType at = new AccountType(typeId, accountType);
 
-				return new Account(id, balance, as, at);
+				return new Account(id, balance, as, at);				
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
 		return null;
 	}
 

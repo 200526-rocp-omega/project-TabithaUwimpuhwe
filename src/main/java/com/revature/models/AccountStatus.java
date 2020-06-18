@@ -3,8 +3,8 @@ package com.revature.models;
 import java.util.Objects;
 
 public class AccountStatus {
-	  private int statusId; // primary key
-	  private String status; // not null, unique
+	  private int statusId; 
+	  private String status; 
 	  
 	  
 	  
