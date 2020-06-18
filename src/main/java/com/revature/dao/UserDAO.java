@@ -42,7 +42,7 @@ public class UserDAO implements IUserDAO {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
 			String sql = "UPDATE USERS SET username=?, password=?, first_name=?,"
-					+ " LAST_NAME=?, EMAIL=?, ROLE_ID=?  where id= ?";
+					+ " LAST_NAME=?, EMAIL=?, ROLE_ID=?  where id=?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 

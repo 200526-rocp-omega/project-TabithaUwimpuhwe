@@ -80,6 +80,13 @@ public class FrontController extends HttpServlet {
 			}
 				break;
 
+			case "balance": {
+				int id = Integer.parseInt(portions[1]);
+				Account c = accountController.findAccountBalanceById(req.getSession(false), id);
+				res.setStatus(200);
+				res.getWriter().println(om.writeValueAsString(c));
+			}
+				break;
 			}
 		} catch (NotLoggedInException e) {
 			res.setStatus(401);
@@ -115,8 +122,27 @@ public class FrontController extends HttpServlet {
 					res.getWriter().println("You were not logged in to begin with");
 				}
 				break;
-
+				
+			case "accounts":
+				HttpSession session = req.getSession(false);
+				session = req.getSession(false);
+				AuthService.guard(session, "Admin", "Employee");
+				Account a = om.readValue(req.getReader(), Account.class);
+				accountController.createAccountById(session, a);
+				System.out.println(a);
+				res.setStatus(201);
+				res.getWriter().println(om.writeValueAsString(a));		
+				break;
+				
 			case "users":
+				session = req.getSession(false);
+				AuthService.guard(session, "Admin");
+				
+				User u1 = om.readValue(req.getReader(), User.class);
+				userController.createUser(session, u1);
+				System.out.println(u1);
+				res.setStatus(201);
+				res.getWriter().println(om.writeValueAsString(u1));		
 				break;
 			}
 		} catch (NotLoggedInException e) {

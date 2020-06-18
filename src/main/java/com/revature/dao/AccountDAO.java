@@ -41,14 +41,14 @@ public class AccountDAO implements IAccountDAO {
 		
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "UPDATE ACCOUNTS SET balance=?, STATUS_ID=?1, TYPE_ID=? where id=?;";
+			String sql = "UPDATE ACCOUNTS SET balance=?, STATUS_ID=?, TYPE_ID=? where id=?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
 			stmt.setDouble(1, a.getBalance());
 			stmt.setInt(2, a.getStatus().getStatusId());
 			stmt.setInt(3, a.getType().getTypeId());
-
+			stmt.setInt(4, a.getAccountId());
 			return stmt.executeUpdate();
 
 		} catch (SQLException e) {
