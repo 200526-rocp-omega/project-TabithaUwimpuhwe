@@ -41,8 +41,8 @@ public class UserDAO implements IUserDAO {
 	public int update(User u) {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
-			String sql = "UPDATE USERS SET username='?', password='?', FIRST_NAME='?,"
-					+ "LAST_NAME='?', EMAIL='?', ROLE_ID=?  where id= ?";
+			String sql = "UPDATE USERS SET username=?, password=?, first_name=?,"
+					+ " LAST_NAME=?, EMAIL=?, ROLE_ID=?  where id= ?";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
@@ -52,6 +52,7 @@ public class UserDAO implements IUserDAO {
 			stmt.setString(4, u.getLastName());
 			stmt.setString(5, u.getEmail());
 			stmt.setInt(6, u.getRole().getRoleId());
+			stmt.setInt(7, u.getUserId());
 
 			return stmt.executeUpdate();
 
